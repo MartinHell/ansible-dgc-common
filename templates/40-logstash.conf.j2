@@ -1,0 +1,9 @@
+# File managed by Ansible. Don't make any local changes
+
+# Log to Logstash
+{% if rsyslog_logstash_protocol == "tcp" -%}
+*.{{ rsyslog_logstash_severity }}                           @@{{ rsyslog_logstash_host }}:{{ rsyslog_logstash_port }}
+{% endif %}
+{% if rsyslog_logstash_protocol == "udp" -%}
+*.{{ rsyslog_logstash_severity }}                           @{{ rsyslog_logstash_host }}:{{ rsyslog_logstash_port }}
+{% endif %}

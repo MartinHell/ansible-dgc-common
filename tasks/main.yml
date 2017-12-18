@@ -1,0 +1,10 @@
+---
+#
+#tasks:
+- locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: true
+- import_tasks: rsyslog.yml
+- import_tasks: ntp.yml
+#- include: rsyslog.yml

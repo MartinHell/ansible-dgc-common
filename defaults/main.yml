@@ -1,0 +1,6 @@
+---
+# Default variables
+rsyslog_logstash_protocol: "tcp"
+rsyslog_logstash_severity: "err"
+rsyslog_logstash_host: "localhost"
+rsyslog_logstash_port: "514"

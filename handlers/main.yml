@@ -1,0 +1,3 @@
+---
+- import_tasks: rsyslog.yml
+- import_tasks: ntp.yml

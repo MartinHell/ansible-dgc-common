@@ -1,0 +1,4 @@
+---
+- name: restart ntpd
+  become: true
+  systemd: state=restarted name=ntp

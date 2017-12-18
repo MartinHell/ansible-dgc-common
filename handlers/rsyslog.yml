@@ -1,0 +1,5 @@
+---
+
+- name: restart rsyslog
+  become: true
+  systemd: state=restarted name=rsyslog

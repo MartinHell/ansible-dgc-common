@@ -1,0 +1,11 @@
+---
+
+- name: Copy rsyslog configuration file
+  become: true
+  template:
+    src: 40-logstash.conf.j2
+    dest: /etc/rsyslog.d/40-logstash.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart rsyslog
