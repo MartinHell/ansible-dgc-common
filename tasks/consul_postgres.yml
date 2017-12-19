@@ -1,0 +1,33 @@
+---
+- name: copy postgres consul check
+  template:
+    dest: "/usr/local/bin/postgresql.py"
+    owner: "root"
+    group: "root"
+    mode: 0755
+    src: "templates/postgresql.py.j2"
+  become: true
+  register: result
+
+- name: install pip
+  apt:
+    name: python-pip
+    state: present
+  become: true
+
+- name: install python-consul module
+  pip:
+    name: python-consul
+    version: 0.7.2
+    state: present
+  become: true
+
+- name: register postgresql in consul
+  consul:
+    host: "{{ ansible_eth1.ipv4.address }}"
+    service_name: app-postgres
+    service_port: 6432
+    interval: 30s
+    script: /usr/local/bin/postgresql.py
+    state: present
+  when: result|changed

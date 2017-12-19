@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import psycopg2
+import sys
+
+try:
+    conn = psycopg2.connect("dbname='{{ repmgr_db_name }}' user='{{ repmgr_db_user }}' host='localhost' password='{{ repmgr_db_password }}'")
+except:
+    raise "Unable to connect to the database"
+
+cur = conn.cursor()
+
+cur.execute("""SELECT pg_is_in_recovery()""")
+
+rows = cur.fetchall()
+
+if "False" in repr(rows[0]):
+    sys.stdout.write("Active\n")
+    sys.exit(0)
+
+sys.stdout.write("Standby\n")
+sys.exit(2)
