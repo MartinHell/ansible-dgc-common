@@ -3,17 +3,17 @@
 - name: create gitlab database
   postgresql_db:
     name: "{{ gitlab_db_dbname }}"
-  when: hostvars[inventory_hostname]['repmgr_is_master'] == 'on'
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
 
 - name: create gitlab user
   postgresql_user:
     db: "{{ gitlab_db_dbname }}"
     name: "{{ gitlab_db_username }}"
     password: "{{ gitlab_db_password }}"
-  when: hostvars[inventory_hostname]['repmgr_is_master'] == 'on'
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
 
 - name: enable pg_trgm
   postgresql_ext:
     name: pg_trgm
     db: "{{ gitlab_db_dbname }}"
-  when: hostvars[inventory_hostname]['repmgr_is_master'] == 'on'
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
