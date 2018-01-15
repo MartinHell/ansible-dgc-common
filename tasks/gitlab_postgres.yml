@@ -17,3 +17,27 @@
     name: pg_trgm
     db: "{{ gitlab_db_dbname }}"
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: enable pg_buffercache in postgres database
+  postgresql_ext:
+    name: pg_buffercache
+    db: "postgres"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: enable pg_buffercache in gitlab database
+  postgresql_ext:
+    name: pg_buffercache
+    db: "{{ gitlab_db_dbname }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: enable pg_stat_statements in postgres database
+  postgresql_ext:
+    name: pg_stat_statements
+    db: "postgres"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: enable pg_stat_statements in gitlab database
+  postgresql_ext:
+    name: pg_stat_statements
+    db: "{{ gitlab_db_dbname }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
