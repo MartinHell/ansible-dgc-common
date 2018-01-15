@@ -18,4 +18,5 @@
 - name: add redis zabbix cronjob
   cron:
     job: "/usr/lib/zabbix/externalscripts/zbx_redis_stats.py '{{ ansible_nodename }}' -p 6379"
+    user: root
     cron_file: zbx_redis_stats
