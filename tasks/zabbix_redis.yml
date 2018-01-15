@@ -6,7 +6,7 @@
     owner: "zabbix"
     group: "zabbix"
     mode: 0755
-    src: "templates//usr/lib/zabbix/externalscripts/zbx_redis_stats.py.j2"
+    src: "templates/zbx_redis_stats.py.j2"
   become: true
 
 - name: install python-redis
@@ -18,4 +18,4 @@
 - name: add redis zabbix cronjob
   cron:
     job: "/usr/lib/zabbix/externalscripts/zbx_redis_stats.py '{{ ansible_nodename }}' -p 6379"
-    cron_file: zbx_redis_stats   
+    cron_file: zbx_redis_stats
