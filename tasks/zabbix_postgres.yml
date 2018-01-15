@@ -9,3 +9,9 @@
     src: "files/userparameter_postgresql.conf"
   become: true
   notify: restart zabbix
+
+- name: create zabbix user
+  postgresql_user:
+    db: "postgres"
+    name: "zabbix"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
