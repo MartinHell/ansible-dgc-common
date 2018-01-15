@@ -10,8 +10,13 @@
   become: true
   notify: restart zabbix
 
+- name: create zabbix database
+  postgresql_db:
+    name: "zabbix"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
 - name: create zabbix user
   postgresql_user:
-    db: "postgres"
+    db: "zabbix"
     name: "zabbix"
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
