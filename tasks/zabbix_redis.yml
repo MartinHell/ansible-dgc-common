@@ -1,0 +1,21 @@
+---
+
+- name: copy redis zabbix check
+  template:
+    dest: "/usr/lib/zabbix/externalscripts/zbx_redis_stats.py"
+    owner: "zabbix"
+    group: "zabbix"
+    mode: 0755
+    src: "templates//usr/lib/zabbix/externalscripts/zbx_redis_stats.py.j2"
+  become: true
+
+- name: install python-redis
+  apt:
+    name: python-redis
+    state: present
+  become: true
+
+- name: add redis zabbix cronjob
+  cron:
+    job: "/usr/lib/zabbix/externalscripts/zbx_redis_stats.py '{{ ansible_nodename }}' -p 6379"
+    cron_file: zbx_redis_stats   
