@@ -2,7 +2,7 @@
 
 - name: copy postgres zabbix configuration
   copy:
-    dest: "/etc/zabbix/zabbix.d/userparameter_postgresql.conf"
+    dest: "/etc/zabbix/zabbix_agentd.d/userparameter_postgresql.conf"
     owner: "zabbix"
     group: "zabbix"
     mode: 0755
