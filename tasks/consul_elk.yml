@@ -1,0 +1,24 @@
+---
+- name: install pip
+  apt:
+    name: python-pip
+    state: present
+  become: true
+
+- name: install python-consul module
+  pip:
+    name: python-consul
+    version: 0.7.2
+    state: present
+  become: true
+
+- name: register logstash in consul
+  consul:
+    token: "{{ ansible_consul_token }}"
+    host: "{{ ansible_all_ipv4_addresses[0] }}"
+    service_name: app-logstash
+    service_port: 8001
+    interval: 30s
+    http: http://127.0.0.1:8001
+    state: present
+  when: result|changed
