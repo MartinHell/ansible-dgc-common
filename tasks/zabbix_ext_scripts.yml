@@ -1,0 +1,19 @@
+---
+# Scripts that should be located on the zabbix servers
+- name: copy zabbix scripts
+  copy:
+    dest: "/usr/lib/zabbix/externalscripts/{{ item }}"
+    owner: "zabbix"
+    group: "zabbix"
+    mode: 0755
+    src: "files/zabbix/{{ item }}"
+  become: true
+  with_items:
+    - consul.py
+    - zbxjson.py
+
+- name: install python-ntlm
+  apt: pkg={{ item }} state=present update_cache=yes
+  become: true
+  with_items:
+    - python-ntlm
