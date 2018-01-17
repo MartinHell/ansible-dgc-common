@@ -17,3 +17,5 @@
   become: true
   with_items:
     - python-ntlm
+    - python-docopt
+    - python-requests
