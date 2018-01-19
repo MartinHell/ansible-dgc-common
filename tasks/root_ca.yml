@@ -6,8 +6,7 @@
   copy:
     src: {{ item }}
     dest: /usr/local/share/ca-certificates/{{ item | basename }}
-  with_items:
-    - /etc/ansible/files/vault/int_units_cloud/chain.pem 
+  with_items: "{{ ca_certs }}"
 
 - name: Update cert index
   shell: /usr/sbin/update-ca-certificates
