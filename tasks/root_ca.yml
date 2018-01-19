@@ -4,8 +4,8 @@
 
 - name: Install Root CA
   copy:
-    src: {{ item }}
-    dest: /usr/local/share/ca-certificates/{{ item | basename }}
+    src: "{{ item }}"
+    dest: "/usr/local/share/ca-certificates/{{ item | basename }}"
   with_items: "{{ ca_certs }}"
 
 - name: Update cert index
