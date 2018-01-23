@@ -1,0 +1,13 @@
+---
+- name: copy grafana extra config files
+  copy:
+    dest: "/etc/grafana/{{ item }}"
+    owner: "root"
+    group: "grafana"
+    mode: 0640
+    src: "files/grafana/{{ item }}"
+  become: true
+  notify:
+    - restart ntpd
+  with_items:
+    - ldap.toml
