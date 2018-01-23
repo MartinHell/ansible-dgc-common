@@ -7,7 +7,7 @@
 - name: create grafana session database
   postgresql_db:
     name: "{{ grafana_session_dbname }}"
-  register: session database
+  register: session
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
 
 - name: create grafana user
@@ -25,8 +25,8 @@
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
 
 - name: create grafana session table
-  command: psql -U grafana grafana_session -c 'CREATE TABLE IF NOT EXISTS session (key CHAR(16) NOT NULL, data BYTEA, expiry INTEGER NOT NULL, PRIMARY KEY (key) );'
+  command: psql -U {{ grafana_db_username }} {{ grafana_session_dbname }} -c 'CREATE TABLE IF NOT EXISTS session (key CHAR(16) NOT NULL, data BYTEA, expiry INTEGER NOT NULL, PRIMARY KEY (key) );'
   when:
-    - session database
+    - session
     - hostvars[inventory_hostname]['repmgr_is_master'] is defined
   become: true
