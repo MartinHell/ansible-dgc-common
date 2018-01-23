@@ -1,0 +1,14 @@
+---
+- name: Ensure local certs directory exists
+  file: state=directory path=/usr/local/share/ca-certificates
+
+- name: Install Root CA
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/share/ca-certificates/{{ item | basename }}"
+  with_items: "{{ ca_certs }}"
+  become: true
+
+- name: Update cert index
+  shell: /usr/sbin/update-ca-certificates
+  become: true

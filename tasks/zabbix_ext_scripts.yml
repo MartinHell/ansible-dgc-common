@@ -11,6 +11,7 @@
   with_items:
     - consul.py
     - zbxjson.py
+    - zext_ssl_cert.sh
 
 - name: install python-ntlm
   apt: pkg={{ item }} state=present update_cache=yes
@@ -19,3 +20,4 @@
     - python-ntlm
     - python-docopt
     - python-requests
+    - bc

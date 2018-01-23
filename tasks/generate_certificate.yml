@@ -1,0 +1,36 @@
+---
+- name: Check if ssl file exists
+  stat: path="/etc/ssl/{{ ansible_fqdn }}.crt"
+  register: ssl_file
+  ignore_errors: True
+
+- name: Install ssl certificate
+  block:
+    - name: Generate certificate
+      uri:
+        url: "{{ VAULT_URL }}/v1/{{ VAULT_PKI_PATH }}/issue/{{ VAULT_PKI_ROLE }}"
+        method: POST
+        headers:
+          X-Vault-Token: "{{ VAULT_ROOT_TOKEN }}"
+        body:
+          common_name:
+            "{{ ansible_fqdn }}"
+          ttl:
+            "{{ VAULT_PKI_TTL }}"
+        body_format: json
+        return_content: yes
+      register: response
+
+    - name: save private key
+      copy:
+        content: "{{ response.json.data.private_key }}"
+        dest: "/etc/ssl/{{ ansible_fqdn }}.key"
+        
+    - name: save certificate
+      copy:
+        content: "{{ response.json.data.certificate }}"
+        dest: "/etc/ssl/{{ ansible_fqdn }}.crt"
+
+      
+  when: ssl_file.stat.exists == False
+  become: true
