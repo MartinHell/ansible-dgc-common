@@ -17,7 +17,7 @@
     token: "{{ ansible_consul_token }}"
     host: "{{ ansible_all_ipv4_addresses[0] }}"
     service_name: app-logstash
-    service_port: 8001
+    service_port: 10514
     interval: 30s
     http: http://127.0.0.1:8001
     state: present
