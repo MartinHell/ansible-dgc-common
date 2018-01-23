@@ -8,6 +8,6 @@
     src: "files/grafana/{{ item }}"
   become: true
   notify:
-    - restart ntpd
+    - restart grafana
   with_items:
     - ldap.toml
