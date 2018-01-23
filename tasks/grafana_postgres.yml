@@ -30,3 +30,10 @@
     - session
     - hostvars[inventory_hostname]['repmgr_is_master'] is defined
   become: true
+
+- name: grant grafana access to session table
+  command: psql -U {{ grafana_db_username }} {{ grafana_session_dbname }} -c 'GRANT ALL PRIVILEGES ON TABLE session TO {{ grafana_db_username }};'
+  when:
+    - session
+    - hostvars[inventory_hostname]['repmgr_is_master'] is defined
+  become: true
