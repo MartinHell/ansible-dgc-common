@@ -1,0 +1,24 @@
+---
+- name: create grafana database
+  postgresql_db:
+    name: "{{ grafana_db_dbname }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create grafana session database
+  postgresql_db:
+    name: "{{ grafana_session_dbname }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create grafana user
+  postgresql_user:
+    db: "{{ grafana_db_dbname }}"
+    name: "{{ grafana_db_username }}"
+    password: "{{ grafana_db_password }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create grafana session user
+  postgresql_user:
+    db: "{{ grafana_session_dbname }}"
+    name: "{{ grafana_db_username }}"
+    password: "{{ grafana_db_password }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
