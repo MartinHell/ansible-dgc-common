@@ -65,6 +65,7 @@
     - fortigate_exporter/fortigate_prometheus_exporter.service
 
 - name: restart services
+  command: /bin/true
   when: result1|changed or result2|changed or result3|changed
   notify:
     - restart {{ item }}
