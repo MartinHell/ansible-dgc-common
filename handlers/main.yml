@@ -3,3 +3,4 @@
 - import_tasks: ntp.yml
 - import_tasks: zabbix.yml
 - import_tasks: grafana.yml
+- import_tasks: prometheus_exporters.yml
