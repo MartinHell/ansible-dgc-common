@@ -9,6 +9,19 @@
     state: directory
   become: true
 
+- name: Add pip requirements file
+  copy:
+    dest: /tmp/pip-requirements
+    owner: "root"
+    group: "root"
+    mode: 0644
+    src: files/prometheus/pip-requirements
+  become: true
+
+- name: pip install requirements
+  pip: requirements=/tmp/pip-requirements state=present
+  become: true
+
 - name: create prometheus exporters config directory
   file:
     path: /etc/prometheus/exporters/{{ item }}
