@@ -41,7 +41,7 @@
     dest: "/usr/local/bin/{{ item|basename }}"
     owner: "root"
     group: "root"
-    mode: 0644
+    mode: 0755
     src: "/etc/ansible/files/prometheus/{{ item }}"
   become: true
   register: result2
