@@ -1,0 +1,13 @@
+---
+
+- name: restart vmware_prometheus_exporter
+  become: true
+  systemd: state=restarted name=vmware_prometheus_exporter daemon_reload=yes
+
+- name: restart scaleio_prometheus_exporter
+  become: true
+  systemd: state=restarted name=scaleio_prometheus_exporter daemon_reload=yes
+
+- name: restart fortigate_prometheus_exporter
+  become: true
+  systemd: state=restarted name=fortigate_prometheus_exporter daemon_reload=yes

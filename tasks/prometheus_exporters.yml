@@ -1,0 +1,74 @@
+---
+
+- name: create prometheus exporters directory
+  file:
+    path: /etc/prometheus/exporters
+    owner: "prometheus"
+    group: "prometheus"
+    mode: 0755
+    state: directory
+  become: true
+
+- name: create prometheus exporters config directory
+  file:
+    path: /etc/prometheus/exporters/{{ item }}
+    owner: "prometheus"
+    group: "prometheus"
+    mode: 0755
+    state: directory
+  become: true
+  with_items:
+    - vmware_exporter
+    - scaleio_exporter
+    - fortigate_exporter
+
+- name: copy prometheus exporter config files
+  copy:
+    dest: "/etc/prometheus/exporters/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    src: "/etc/ansible/files/prometheus/config/{{ item }}"
+  become: true
+  register: result1
+  with_items:
+    - vmware_exporter/config.yml
+    - scaleio_exporter/config.yml
+    - fortigate_exporter/config.yml
+
+- name: copy prometheus exporter scripts
+  copy:
+    dest: "/usr/local/bin/{{ item|basename }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    src: "/etc/ansible/files/prometheus/{{ item }}"
+  become: true
+  register: result2
+  with_items:
+    - vmware_exporter/vmware_export.py
+    - scaleio_exporter/scaleio_exporter.py
+    - fortigate_exporter/fortigate_exporter.py
+
+- name: copy prometheus exporter systemd scripts
+  copy:
+    dest: "/etc/systemd/system/{{ item|basename }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    src: "/etc/ansible/files/prometheus/{{ item }}"
+  become: true
+  register: result3
+  with_items:
+    - vmware_exporter/vmware_prometheus_exporter.service
+    - scaleio_exporter/scaleio_prometheus_exporter.service
+    - fortigate_exporter/fortigate_prometheus_exporter.service
+
+- name: restart services
+  when: result1|changed or result2|changed or result3|changed
+  notify:
+    - restart {{ item }}
+  with_items:
+    - vmware_prometheus_exporter
+    - scaleio_prometheus_exporter
+    - fortigate_prometheus_exporter
