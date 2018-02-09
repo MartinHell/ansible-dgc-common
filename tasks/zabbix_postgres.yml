@@ -33,6 +33,7 @@
   postgresql_privs:
     db: "{{ zabbix_server_dbname }}"
     roles: "{{ zabbix_server_grafanauser }}"
+    type: database
     state: present
     privs: select
 
