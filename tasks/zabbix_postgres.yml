@@ -35,5 +35,5 @@
     roles: "{{ zabbix_server_grafanauser }}"
     type: database
     state: present
-    privs: select
+    privs: SELECT
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
