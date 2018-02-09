@@ -28,3 +28,11 @@
     name: "{{ zabbix_server_grafanauser }}"
     password: "{{ zabbix_server_grafanapassword }}"
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: grant zabbix grafana user select privileges
+  postgresql_privs:
+    db: "{{ zabbix_server_dbname }}"
+    roles: "{{ zabbix_server_grafanauser }}"
+    state: present
+    privs: select
+
