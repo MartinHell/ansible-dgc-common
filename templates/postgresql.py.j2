@@ -15,8 +15,15 @@ cur.execute("""SELECT pg_is_in_recovery()""")
 rows = cur.fetchall()
 
 if "False" in repr(rows[0]):
+    if sys.argv[1] == 'master':
+        sys.stdout.write("Active\n")
+        sys.exit(0)
     sys.stdout.write("Active\n")
-    sys.exit(0)
+    sys.exit(2)
 
-sys.stdout.write("Standby\n")
-sys.exit(2)
+if len(rows) > 0:
+    if sys.argv[1] ==  'slave':
+        sys.stdout.write("Standby\n")
+        sys.exit(0)
+    sys.stdout.write("Standby\n")
+    sys.exit(2)
