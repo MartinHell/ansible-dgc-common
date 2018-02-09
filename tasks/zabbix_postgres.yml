@@ -33,7 +33,8 @@
   postgresql_privs:
     db: "{{ zabbix_server_dbname }}"
     roles: "{{ zabbix_server_grafanauser }}"
-    type: database
+    type: table
+    objs: ALL_IN_SCHEMA
     state: present
     privs: SELECT
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
