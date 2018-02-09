@@ -21,3 +21,10 @@
     name: "{{ zabbix_server_dbuser }}"
     password: "{{ zabbix_server_dbpassword }}"
   when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create zabbix grafana user
+  postgresql_user:
+    db: "{{ zabbix_server_dbname }}"
+    name: "{{ zabbix_server_grafanauser }}"
+    password: "{{ zabbix_server_grafanapassword }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
