@@ -2,7 +2,7 @@
 # Scripts that should be located on the zabbix servers
 - name: copy zabbix scripts
   copy:
-    dest: "/usr/lib/zabbix/externalscripts/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
     owner: "zabbix"
     group: "zabbix"
     mode: 0755
