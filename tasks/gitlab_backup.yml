@@ -1,0 +1,10 @@
+---
+
+- name: add gitlab backup to cron
+  cron:
+    name: gitlab backup
+    minute: "0"
+    hour: "2"
+    job: "/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1"
+    user: "root"
+  become: true
