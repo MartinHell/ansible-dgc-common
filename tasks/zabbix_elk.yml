@@ -9,15 +9,15 @@
     src: "files/zabbix/{{ item }}"
   become: true
   with_items:
-    - consul.py
-    - zbxjson.py
-    - zext_ssl_cert.sh
+    - elastizabbix
 
-- name: install python-ntlm
-  apt: pkg={{ item }} state=present update_cache=yes
+- name: Copy zabbix agent config
+  copy:
+    dest: "/etc/zabbix/zabbix_agentd.d/{{ item }}"
+    owner: "zabbix"
+    group: "zabbix"
+    mode: 0644
+    src: "files/zabbix/{{ item }}"
   become: true
   with_items:
-    - python-ntlm
-    - python-docopt
-    - python-requests
-    - bc
+    - elastizabbix.conf
