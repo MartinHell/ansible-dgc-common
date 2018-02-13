@@ -1,0 +1,13 @@
+---
+
+- name: create foreman database
+  postgresql_db:
+    name: "{{ foreman_db_name }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create foreman user
+  postgresql_user:
+    db: "{{ foreman_db_name }}"
+    name: "{{ foreman_db_username }}"
+    password: "{{ foreman_db_password }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
