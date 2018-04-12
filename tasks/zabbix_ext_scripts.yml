@@ -12,6 +12,8 @@
     - consul.py
     - zbxjson.py
     - zext_ssl_cert.sh
+    - check-vmware-alarms.py
+    - ssl_cert.sh
 
 - name: install python-ntlm
   apt: pkg={{ item }} state=present update_cache=yes
