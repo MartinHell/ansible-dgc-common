@@ -23,4 +23,9 @@
     - python-docopt
     - python-requests
     - bc
-    - python-pyvmomi
+#    - python-pyvmomi
+
+- name: install pyvmomi
+  pip:
+    name: pyvmomi
+    version: 6.5.0

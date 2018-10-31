@@ -6,5 +6,5 @@
     state: present
   become: true
 - import_tasks: rsyslog.yml
-- import_tasks: ntp.yml
+#- import_tasks: ntp.yml
 #- include: rsyslog.yml

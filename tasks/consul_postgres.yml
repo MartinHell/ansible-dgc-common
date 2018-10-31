@@ -31,7 +31,7 @@
     interval: 30s
     script: /usr/local/bin/postgresql.py master
     state: present
-  when: result|changed
+#  when: result|changed
 
 - name: register postgresql ro in consul
   consul:
@@ -42,4 +42,4 @@
     interval: 30s
     script: /usr/local/bin/postgresql.py slave
     state: present
-  when: result|changed
+#  when: result|changed
