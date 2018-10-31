@@ -1,0 +1,13 @@
+---
+
+- name: create mattermost database
+  postgresql_db:
+    name: "{{ gitlab_mattermost_db_name }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
+
+- name: create mattermost user
+  postgresql_user:
+    db: "{{ gitlab_mattermost_db_name }}"
+    name: "{{ gitlab_mattermost_db_username }}"
+    password: "{{ gitlab_mattermost_db_password }}"
+  when: hostvars[inventory_hostname]['repmgr_is_master'] is defined
