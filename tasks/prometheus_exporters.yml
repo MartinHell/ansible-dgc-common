@@ -31,7 +31,6 @@
     state: directory
   become: true
   with_items:
-    - vmware_exporter
     - scaleio_exporter
     - fortigate_exporter
 
@@ -45,7 +44,6 @@
   become: true
   register: result1
   with_items:
-    - vmware_exporter/config.yml
     - scaleio_exporter/config.yml
     - fortigate_exporter/config.yml
 
@@ -59,7 +57,6 @@
   become: true
   register: result2
   with_items:
-    - vmware_exporter/vmware_export.py
     - scaleio_exporter/scaleio_exporter.py
     - fortigate_exporter/fortigate_exporter.py
 
@@ -73,7 +70,6 @@
   become: true
   register: result3
   with_items:
-    - vmware_exporter/vmware_prometheus_exporter.service
     - scaleio_exporter/scaleio_prometheus_exporter.service
     - fortigate_exporter/fortigate_prometheus_exporter.service
 
@@ -83,6 +79,5 @@
   notify:
     - restart {{ item }}
   with_items:
-    - vmware_prometheus_exporter
     - scaleio_prometheus_exporter
     - fortigate_prometheus_exporter
