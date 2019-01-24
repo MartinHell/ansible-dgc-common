@@ -1,0 +1,10 @@
+---
+- name: copy postgres zabbix configuration
+  copy:
+    dest: "/etc/zabbix/zabbix_agentd.d/userparameter_ntp.conf"
+    owner: "zabbix"
+    group: "zabbix"
+    mode: 0755
+    src: "files/userparameter_ntp.conf"
+  become: true
+  notify: restart zabbix
