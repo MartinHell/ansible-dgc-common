@@ -1,0 +1,96 @@
+- name: check zabbix revision
+  shell: zabbix_agentd -V | awk '/Revision/'
+  register: revision
+
+- name: regex  
+  set_fact:
+    TMPVAL: "{{ revision.stdout | regex_findall('^Revision (\\d+) .*$') }}"
+
+- name: fugly
+  set_fact:
+    ZABBIX_MODULE_DOCKER_REV: "{{ TMPVAL[0] }}"
+
+- name: check if docker module is installed
+  stat:
+    path: "/var/lib/zabbix/modules/zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }}"
+  register: existOnRemote
+  ignore_errors: true
+
+
+- name: check if we have compiled the module locally
+  stat:
+    path: "/etc/ansible/files/zabbix/repo/zabbix-src/src/modules/zabbix_module_docker/zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }}"
+  register: existOnLocal
+  ignore_errors: true
+  delegate_to: 127.0.0.1
+
+- name: download+compile docker module
+  block:
+  - name: create tree
+    file:
+      state: directory
+      path: /etc/ansible/files/zabbix/repo
+      recurse: true
+    delegate_to: 127.0.0.1
+
+  - name: fetch docker module
+    git:
+      repo: https://github.com/monitoringartist/zabbix-docker-monitoring
+      dest: /etc/ansible/files/zabbix/repo/zabbix-docker-monitoring
+    delegate_to: 127.0.0.1
+
+  - name: install deps
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - automake
+    - autoconf
+    - gcc
+    - make
+    - pkg-config
+    - libpcre3-dev
+    - subversion
+    - git
+    delegate_to: 127.0.0.1
+
+  - name: fetch zabbix
+    shell: "svn --quiet checkout svn://svn.zabbix.com/trunk@{{ ZABBIX_MODULE_DOCKER_REV }}  /etc/ansible/files/zabbix/repo/zabbix-src"
+    delegate_to: 127.0.0.1
+
+  - name: compile module
+    shell: | 
+      cd /etc/ansible/files/zabbix/repo/zabbix-src
+      ./bootstrap.sh 1>/dev/null
+      ./configure --enable-agent 1>/dev/null
+      cp -R /etc/ansible/files/zabbix/repo/zabbix-docker-monitoring/src/modules/zabbix_module_docker/ /etc/ansible/files/zabbix/repo/zabbix-src/src/modules/
+      cd /etc/ansible/files/zabbix/repo/zabbix-src/src/modules/zabbix_module_docker
+      make clean
+      gcc -fPIC -shared -o zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }} zabbix_module_docker.c -I../../../include -I../../../src/libs/zbxsysinfo
+    delegate_to: 127.0.0.1
+  when: not existOnLocal.stat.exists
+
+
+- name: copy module to remote
+  block:
+  - name: make sure zabbix module dir exists
+    file:
+      recurse: true
+      state: directory
+      mode: 0755
+      owner: zabbix
+      group: zabbix
+      path: /var/lib/zabbix/modules
+
+  - name: copy module to server
+    copy:
+      src: "/etc/ansible/files/zabbix/repo/zabbix-src/src/modules/zabbix_module_docker/zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }}"
+      dest: /var/lib/zabbix/modules/zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }}
+ 
+  - name: symlink the file
+    file:
+      state: link
+      src: /var/lib/zabbix/modules/zabbix_module_docker.so-{{ ZABBIX_MODULE_DOCKER_REV }}
+      dest: /var/lib/zabbix/modules/zabbix_module_docker.so
+
+  when: not existOnRemote.stat.exists
