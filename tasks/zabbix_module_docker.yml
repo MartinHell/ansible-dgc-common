@@ -55,7 +55,7 @@
     delegate_to: 127.0.0.1
 
   - name: fetch zabbix
-    shell: "svn --quiet checkout svn://svn.zabbix.com/trunk@{{ ZABBIX_MODULE_DOCKER_REV }}  /etc/ansible/files/zabbix/repo/zabbix-src"
+    shell: "svn --quiet --force checkout svn://svn.zabbix.com/trunk@{{ ZABBIX_MODULE_DOCKER_REV }}  /etc/ansible/files/zabbix/repo/zabbix-src"
     delegate_to: 127.0.0.1
 
   - name: compile module
