@@ -1,0 +1,21 @@
+- name: copy systemd service check
+  copy:
+    dest: "/usr/local/bin/systemd_services.py"
+    owner: "root"
+    group: "root"
+    mode: 0755
+    src: "files/zabbix_agent/systemd_services.py"
+  become: true
+
+
+- name: copy systemd zabbix configuration
+  copy:
+    dest: "/etc/zabbix/zabbix_agentd.d/userparameter_systemd_services.conf"
+    owner: "zabbix"
+    group: "zabbix"
+    mode: 0755
+    src: "files/userparameter_systemd_services.conf"
+  become: true
+  notify: restart zabbix
+
+
