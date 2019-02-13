@@ -9,7 +9,7 @@ import json
 def Discovery(*kv):
     d = {"data":[]}
 
-    if len(kv) > 0:
+    if len(kv[0]) > 0:
       white = kv[0]
     else:
       white = ['sshd', 'ntp', 'syslog', 'zabbix', 'docker']
@@ -48,6 +48,12 @@ def main():
         default=False,
         help="Discovery")
     parser.add_argument(
+        '-l',
+        '--servicelist',
+        dest='list',
+        default=[],
+        help="Comma separated list of services to discover")
+    parser.add_argument(
         '-s',
         '--service',
         dest='service',
@@ -56,8 +62,11 @@ def main():
 
     args = parser.parse_args()
 
+    discover_list = []
+    if len(args.list) > 0:
+        discover_list = args.list.split(',')
     if args.discovery:
-        print(Discovery())
+        print(Discovery(discover_list))
         return
     if args.service:
         print(CheckService(args.service))
@@ -66,3 +75,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
