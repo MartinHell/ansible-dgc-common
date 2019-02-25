@@ -9,7 +9,7 @@
     src: "files/zabbix/{{ item }}"
   become: true
   with_items:
-    - elastizabbix
+    - zabbix-agent-extension-elasticsearch
 
 - name: Copy zabbix agent config
   copy:
@@ -20,4 +20,4 @@
     src: "files/zabbix/{{ item }}"
   become: true
   with_items:
-    - elastizabbix.conf
+    - zabbix-agent-extension-elasticsearch.conf
