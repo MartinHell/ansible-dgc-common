@@ -30,6 +30,14 @@ def nodeStatus(scaleio,sds_id):
         return 'OK'
 
 
+def ClusterStatus(scaleio):
+    data = json.loads(scaleio._get('/api/types/System/instances').text)
+    clusterstate = [ obj['mdmCluster']['clusterState'] for obj in data if obj['mdmCluster']['clusterState'] != 'ClusteredNormal' ]
+    if len(clusterstate) > 0:
+        return 'Cluster Not ok, state: {}'.format(clusterstate)
+    return 'OK'
+
+
 
 def main():
 
@@ -38,6 +46,7 @@ def main():
     parser.add_argument('-u', dest='username', required=True, help='username')
     parser.add_argument('-p', dest='password', required=True, help='password')
     parser.add_argument('-n', dest='node', required=False, help='node')
+    parser.add_argument('-c', dest='cluster', required=False, help='cluster check')
     parser.add_argument('-d', dest='discover', required=False, default=False, help='discover nodes')
     args = parser.parse_args()
 
@@ -58,6 +67,9 @@ def main():
         data = nodeStatus(scaleio,args.node)
         print(data)
 
+    if args.cluster:
+        data = ClusterStatus(scaleio)
+        print(data)
 
 
 if __name__ == '__main__':
