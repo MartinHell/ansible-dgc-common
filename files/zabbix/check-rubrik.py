@@ -38,7 +38,12 @@ def nodeStatus(ctx,id):
     if data['status'] != 'OK' or len(disks) > 0:
         return 'Overall Status: {} Disk with bad state: {}'.format(data['status'], ','.join(disks))
     return data['status']
-    
+
+def ClusterStatus(ctx):
+    data = ctx.get('internal', '/cluster/me/system_status')
+    if data['status'] == 'ok':
+        return 'OK'
+    return 'NOT OK, Status: {}'.format(data['status'])
 
 def main():
 
@@ -47,6 +52,7 @@ def main():
     parser.add_argument('-u', dest='username', required=True, help='username')
     parser.add_argument('-p', dest='password', required=True, help='password')
     parser.add_argument('-n', dest='node', required=False, help='node')
+    parser.add_argument('-c', dest='cluster', required=False, help='node', action='store_true')
     parser.add_argument('-d', dest='discover', required=False, default=False, help='discover nodes')
     args = parser.parse_args()
 
@@ -62,6 +68,9 @@ def main():
         print(data)
 
 
+    if args.cluster:
+        data = ClusterStatus(rubrik)
+        print(data)
 
 if __name__ == '__main__':
     main()
