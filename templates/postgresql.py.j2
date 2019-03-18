@@ -4,7 +4,7 @@ import psycopg2
 import sys
 
 try:
-    conn = psycopg2.connect("dbname='{{ repmgr_db_name }}' user='{{ repmgr_db_user }}' host='localhost' password='{{ repmgr_db_password }}'")
+    conn = psycopg2.connect("dbname='{{ repmgr_db_name }}' user='{{ repmgr_db_user }}' host='localhost' password='{{ repmgr_db_password }}' connect_timeout=1")
 except:
     sys.stdout.write("Unable to connect to the database\n")
     sys.exit(2)
