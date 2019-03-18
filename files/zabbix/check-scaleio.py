@@ -46,7 +46,7 @@ def main():
     parser.add_argument('-u', dest='username', required=True, help='username')
     parser.add_argument('-p', dest='password', required=True, help='password')
     parser.add_argument('-n', dest='node', required=False, help='node')
-    parser.add_argument('-c', dest='cluster', required=False, help='cluster check')
+    parser.add_argument('-c', dest='cluster', required=False, help='cluster check', action='store_true')
     parser.add_argument('-d', dest='discover', required=False, default=False, help='discover nodes')
     args = parser.parse_args()
 
