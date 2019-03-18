@@ -29,6 +29,7 @@
     service_name: app-postgres
     service_port: 6432
     interval: 2s
+    ttl: 15s
     script: /usr/local/bin/postgresql.py master
     state: present
 #  when: result|changed
@@ -40,6 +41,7 @@
     service_name: app-postgres-ro
     service_port: 6432
     interval: 2s
+    ttl: 15s
     script: /usr/local/bin/postgresql.py slave
     state: present
 #  when: result|changed
