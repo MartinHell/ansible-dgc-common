@@ -28,7 +28,7 @@
     host: "{{ ansible_all_ipv4_addresses[0] }}"
     service_name: app-postgres
     service_port: 6432
-    interval: 30s
+    interval: 2s
     script: /usr/local/bin/postgresql.py master
     state: present
 #  when: result|changed
@@ -39,7 +39,7 @@
     host: "{{ ansible_all_ipv4_addresses[0] }}"
     service_name: app-postgres-ro
     service_port: 6432
-    interval: 30s
+    interval: 2s
     script: /usr/local/bin/postgresql.py slave
     state: present
 #  when: result|changed
