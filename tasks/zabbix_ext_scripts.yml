@@ -35,6 +35,10 @@
   pip:
     name: siolib
 
+- name: install enum
+  pip:
+    name: enum
+
 - name: install pyvmomi
   pip:
     name: pyvmomi
