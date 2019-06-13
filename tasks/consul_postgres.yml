@@ -9,16 +9,6 @@
   become: true
   register: result
 
-- name: copy pgbouncer consul check
-  template:
-    dest: "/usr/local/bin/pgbouncer.py"
-    owner: "root"
-    group: "root"
-    mode: 0755
-    src: "templates/pgbouncer.py.j2"
-  become: true
-  register: result
-
 - name: install pip
   apt:
     name: python-pip
@@ -42,16 +32,6 @@
     interval: 2s
     state: present
 #  when: result|changed
-
-- name: register pgbouncer in consul
-  consul:
-    token: "{{ ansible_consul_token }}"
-    host: "{{ ansible_all_ipv4_addresses[0] }}"
-    service_name: app-pgbouncer
-    service_port: 6432
-    script: /usr/local/bin/pgbouncer.py master
-    interval: 2s
-    state: present
 
 - name: register postgresql ro in consul
   consul:
