@@ -16,6 +16,7 @@
     - ssl_cert.sh
     - check-rubrik.py
     - check-scaleio.py
+    - sbl.py
 
 - name: install python-ntlm
   apt: pkg={{ item }} state=present update_cache=yes
@@ -38,6 +39,10 @@
 - name: install enum
   pip:
     name: enum
+
+- name: install dnspython
+  pip:
+    name: dnspython
 
 - name: install pyvmomi
   pip:
